@@ -22,7 +22,7 @@ class EmojiMemoryGame : ObservableObject {
         (index >= 0 && index < EMOJIS.count) ? EMOJIS[index] : "⁉️"
     }
 
-    @Published private var model = MemoryGame<String>(numberOfPairsOfCards: 6, contentFactory: createCardContent)
+    @Published private var model = MemoryGame<String>(numberOfPairsOfCards: 8, contentFactory: createCardContent)
     
     var cards: Array<MemoryGame<String>.Card> {
         model.cards
