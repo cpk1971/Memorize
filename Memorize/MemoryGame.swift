@@ -10,6 +10,7 @@ import Foundation
 struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: [Card]
     
+    
     init(numberOfPairsOfCards: Int, contentFactory: (Int) -> CardContent) {
         let content = (0..<max(2,numberOfPairsOfCards)).map(contentFactory)
         
@@ -19,31 +20,52 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
+    var indexOfTheOneAndOnlyFaceUpCard: Int? {
+        get { cards.indices.filter { cards[$0].isFaceUp }.only }
+        set { cards.indices.forEach { cards[$0].isFaceUp = ($0 == newValue) } }
+    }
+    
     mutating func choose(_ card: Card) {
         print("chose \(card)")
-        let chosenIndex = index(of: card)
-        cards[chosenIndex].isFaceUp.toggle()
+        if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
+            if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
+                if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
+                    if cards[chosenIndex].content == cards[potentialMatchIndex].content {
+                        cards[chosenIndex].isMatched = true
+                        cards[potentialMatchIndex].isMatched = true
+                    }
+                } else {
+                    indexOfTheOneAndOnlyFaceUpCard = chosenIndex
+                }
+                cards[chosenIndex].isFaceUp = true
+            }
+        }
     }
        
     mutating func shuffle() {
+        cards.indices.forEach {
+            cards[$0].isMatched = false
+            cards[$0].isFaceUp = false
+        }
         cards.shuffle()
         print(cards)
     }
     
-    func index(of card: Card) -> Int {
-        cards.firstIndex(where: { x in x.id == card.id})! // FIXME: what happens if I can't find it?
-    }
-
     struct Card : Equatable, Identifiable, CustomDebugStringConvertible {
         var debugDescription: String {
             return "\(id): \(content) \(isFaceUp ? "up" : "down") \(isMatched ? "matched" : "")"
         }
         
-        var isFaceUp = true
+        var isFaceUp = false
         var isMatched = false
         let content: CardContent
         
-        var id: UUID = UUID()
+        var id = UUID()
     }
 }
 
+extension Array {
+    var only: Element? {
+        count == 1 ? first : nil
+    }
+}
