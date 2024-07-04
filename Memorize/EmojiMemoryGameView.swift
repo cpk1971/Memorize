@@ -23,7 +23,7 @@ struct EmojiMemoryGameView: View {
     }
     
     var cards: some View {
-        AspectVGrid(items: viewModel.cards, aspectRatio: cardAspectRatio) { card in
+        AspectVGrid(viewModel.cards, aspectRatio: cardAspectRatio) { card in
             CardView(card)
                 .aspectRatio(cardAspectRatio, contentMode: .fit)
                 .padding(4)
