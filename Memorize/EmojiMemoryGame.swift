@@ -16,6 +16,8 @@
 import SwiftUI
 
 class EmojiMemoryGame : ObservableObject {
+    typealias Card = MemoryGame<String>.Card
+
     private static let EMOJIS = ["👻", "🎃", "🕷️", "😈", "💀", "🕸️", "🧙‍♀️", "🐈‍⬛", "👹", "☠️", "🍭"]
     
     private static func createCardContent(forPairAtIndex index: Int) -> String {
@@ -24,14 +26,14 @@ class EmojiMemoryGame : ObservableObject {
 
     @Published private var model = MemoryGame<String>(numberOfPairsOfCards: 8, contentFactory: createCardContent)
     
-    var cards: Array<MemoryGame<String>.Card> {
+    var cards: [Card] {
         model.cards
     }
     
     // MARK: - Intents
     
     // This is called an "intent" function
-    func choose(_ card: MemoryGame<String>.Card) {
+    func choose(_ card: Card) {
         model.choose(card)
     }
     
