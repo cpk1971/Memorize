@@ -30,6 +30,10 @@ class EmojiMemoryGame : ObservableObject {
         model.cards
     }
     
+    var color: Color {
+        .orange
+    }
+    
     // MARK: - Intents
     
     // This is called an "intent" function
