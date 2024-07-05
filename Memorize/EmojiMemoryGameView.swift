@@ -16,16 +16,30 @@ struct EmojiMemoryGameView: View {
             Text("Memorize!").font(.largeTitle)
             cards
                 .foregroundColor(viewModel.color)
-            Button("Shuffle") {
-                withAnimation {
-                    viewModel.shuffle()
-                }
+            HStack {
+                score
+                Spacer()
+                shuffle
             }
         }
         .padding()
     }
     
-    var cards: some View {
+    private var score: some View {
+        Text("Score: \(viewModel.score)")
+            .font(.largeTitle)
+            .animation(nil)
+    }
+    
+    private var shuffle: some View {
+        Button("Shuffle") {
+            withAnimation {
+                viewModel.shuffle()
+            }
+        }
+    }
+    
+    private var cards: some View {
         AspectVGrid(viewModel.cards, aspectRatio: cardAspectRatio) { card in
             CardView(card)
                 .aspectRatio(cardAspectRatio, contentMode: .fit)

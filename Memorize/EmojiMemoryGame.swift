@@ -30,6 +30,10 @@ class EmojiMemoryGame : ObservableObject {
         model.cards
     }
     
+    var score: Int {
+        model.score
+    }
+    
     var color: Color {
         .orange
     }
