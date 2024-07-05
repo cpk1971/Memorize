@@ -15,10 +15,11 @@ struct EmojiMemoryGameView: View {
         VStack {
             Text("Memorize!").font(.largeTitle)
             cards
-                .animation(.default, value: viewModel.cards)
                 .foregroundColor(viewModel.color)
             Button("Shuffle") {
-                viewModel.shuffle()
+                withAnimation {
+                    viewModel.shuffle()
+                }
             }
         }
         .padding()
@@ -30,7 +31,9 @@ struct EmojiMemoryGameView: View {
                 .aspectRatio(cardAspectRatio, contentMode: .fit)
                 .padding(4)
                 .onTapGesture {
-                    viewModel.choose(card)
+                    withAnimation {
+                        viewModel.choose(card)
+                    }
                 }
         }
     }
